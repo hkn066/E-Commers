@@ -10,6 +10,8 @@ import com.challenge.projectchallenge.entities.Product;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class ProductManager implements ProductServices {
@@ -32,15 +34,21 @@ public class ProductManager implements ProductServices {
     @Override
     public ProductResponse updateProduct(Long productId, UpdateProductRequest updateProductRequest) {
         productRepository.findById(productId).orElseThrow(RuntimeException::new);
-        Product product=mapperService.forRequest().map(updateProductRequest,Product.class);
+        Product product = mapperService.forRequest().map(updateProductRequest, Product.class);
         product.setId(productId);
         productRepository.save(product);
-        return mapperService.forResponse().map(product,ProductResponse.class);
+        return mapperService.forResponse().map(product, ProductResponse.class);
     }
 
     @Override
     public void deleteProduct(Long productId) {
         Product product = productRepository.findById(productId).orElseThrow(RuntimeException::new);
         productRepository.delete(product);
+    }
+
+    @Override
+    public List<ProductResponse> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        return products.stream().map(productResponse -> mapperService.forResponse().map(productResponse, ProductResponse.class)).toList();
     }
 }

@@ -2,6 +2,7 @@ package com.challenge.projectchallenge.business.concrets;
 
 import com.challenge.projectchallenge.business.abstracts.CustomerServices;
 import com.challenge.projectchallenge.config.PassEncoder;
+import com.challenge.projectchallenge.dataAccess.CartRepository;
 import com.challenge.projectchallenge.dataAccess.CustomerRepository;
 import com.challenge.projectchallenge.dataAccess.RoleRepository;
 import com.challenge.projectchallenge.dto.CustomerDto;
@@ -28,6 +29,7 @@ public class CustomerManager implements CustomerServices {
     private final RoleRepository roleRepository;
     //    private BCryptPasswordEncoder passwordEncoder ;
     private final PassEncoder passEncoder;
+
 
     @Override
     public Customer register(CustomerDto customerDto) {

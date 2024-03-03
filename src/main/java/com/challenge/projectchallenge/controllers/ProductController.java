@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/products")
 @AllArgsConstructor
@@ -23,6 +25,11 @@ public class ProductController {
     public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId) {
        return new ResponseEntity<>(productServices.getProduct(productId), HttpStatus.FOUND);
     }
+    @GetMapping()
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
+    public ResponseEntity<List<ProductResponse>> getAllProducts() {
+        return new ResponseEntity<>(productServices.getAllProducts(), HttpStatus.FOUND);
+    }
 
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -30,7 +37,7 @@ public class ProductController {
         return new ResponseEntity<>(productServices.createProduct(createProductRequest),HttpStatus.CREATED);
     }
 
-    @PostMapping("/{productId}")
+    @PutMapping("/{productId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long productId, @RequestBody UpdateProductRequest updateProductRequest) {
         return new ResponseEntity<>(productServices.updateProduct(productId,updateProductRequest),HttpStatus.GONE);
